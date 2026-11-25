@@ -1786,6 +1786,7 @@ class TestsBlackbox:
         "4": "American",
         "5": "{anti-^}",
         "1/3/2": "explicit override",
+        "6": "anti{^}",
 
         1  ' anti'
         2  ' antimatter'
@@ -1795,6 +1796,7 @@ class TestsBlackbox:
         *  ' anti-inflammatory'
         1/4  ' anti-inflammatory anti-American'
         5/2  ' anti-inflammatory anti-American anti-matter'
+        6/4  ' anti-inflammatory anti-American anti-matter antiAmerican'
         """
 
     def test_anti_prefix_with_trailing_space_and_suffix(self):
@@ -1814,8 +1816,10 @@ class TestsBlackbox:
         "1": "{MODE:CAPS}",
         "2": "{anti^}",
         "3": "matter",
+        "4": "inflammatory",
 
         1/2/3  ' ANTIMATTER'
+        2/4  ' ANTIMATTER ANTI-INFLAMMATORY'
         """
 
     def test_conditionals_3(self):

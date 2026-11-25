@@ -14,13 +14,7 @@ from plover.orthography import add_suffix
 
 
 def meta_attach(ctx, meta):
-    # Lookahead matches rendered text. In caps mode every root looks capitalized.
-    smart_anti = (
-        meta == "anti^"
-        and system.NAME == "English Stenotype"
-        and ctx.last_action.case != Case.UPPER
-        and ctx.last_action.next_case != Case.UPPER_FIRST_WORD
-    )
+    smart_anti = meta == "anti^" and system.NAME == "English Stenotype"
     action = ctx.new_action()
     begin = meta.startswith(META_ATTACH_FLAG)
     end = meta.endswith(META_ATTACH_FLAG)
@@ -61,7 +55,17 @@ def meta_attach(ctx, meta):
     if smart_anti:
         hyphenated = copy(action)
         hyphenated.text += "-"
-        return _LookAheadAction(r"(?:[A-Z]|inflammatory\b)", hyphenated, action)
+        # Forced uppercase makes ordinary roots look like proper nouns.
+        previous = ctx.last_action
+        forced_upper = (
+            previous.case == Case.UPPER
+            or previous.next_case == Case.UPPER_FIRST_WORD
+            or (action.prev_attach and previous.upper_carry)
+        )
+        pattern = r"(?i:inflammatory)\b"
+        if not forced_upper:
+            pattern = r"[A-Z]|" + pattern
+        return _LookAheadAction(pattern, hyphenated, action)
     return action
 
 
