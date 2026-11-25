@@ -1778,6 +1778,46 @@ class TestsBlackbox:
         4  ' agli occhi agli dei agli stivali'
         """
 
+    def test_smart_anti(self):
+        r"""
+        "1": "{anti^}",
+        "2": "matter",
+        "3": "inflammatory",
+        "4": "American",
+        "5": "{anti-^}",
+        "1/3/2": "explicit override",
+
+        1  ' anti'
+        2  ' antimatter'
+        *  ' anti'
+        3  ' anti-inflammatory'
+        2  ' explicit override'
+        *  ' anti-inflammatory'
+        1/4  ' anti-inflammatory anti-American'
+        5/2  ' anti-inflammatory anti-American anti-matter'
+        """
+
+    def test_anti_prefix_with_trailing_space_and_suffix(self):
+        r"""
+        "1": "{anti^}",
+        "2": "American",
+        "3": "{^s}",
+
+        :spaces_after
+        1/2/3  'anti-Americans '
+        *  'anti-American '
+        *  'anti'
+        """
+
+    def test_anti_prefix_in_caps_mode(self):
+        r"""
+        "1": "{MODE:CAPS}",
+        "2": "{anti^}",
+        "3": "matter",
+
+        1/2/3  ' ANTIMATTER'
+        """
+
     def test_conditionals_3(self):
         r"""
         "1": "{:if_next_matches:(?i)([8aeiouxy]|11|dei|gn|ps|s[bcdfglmnpqrtv]|z)/agli/ai}",
